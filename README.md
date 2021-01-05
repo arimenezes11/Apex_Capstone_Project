@@ -2,7 +2,7 @@
 
 ## Overview
 
-The entire site is coded in 3 languages total. Aside from this document, which is purely text and will be used as an aide in my presentation, all the code is contained on 2 files, the main.html file and the index.js file. 3 programming languages were used in coding this; HTML, Javascript, and a form of CSS called Bootstrap. The link to the site is arimenezes11.github.io and will work on all size of computer monitor, but will look weird on tablets and phones. 
+The entire site is coded in 3 languages total. Aside from this document, which is purely text and will be used as an aide in my presentation, all the code is contained on 2 files, the main.html file and the index.js file. 3 programming languages were used in coding this; HTML, Javascript, and a form of CSS called Bootstrap. The link to the site is arimenezes11.github.io and will work on all size of computer monitor, but will look weird on tablets and phones. When developing/testing the site, I used Flask, a python module that allows you to run a webserver, to run a test server on my local network. This is not used in the final product, because the sever only runs on my local network unless I buy a domain and host it there. Instead I used github pages to host the site. The python code for the site is included in the Github repository, with the file name app.py. 
 
 ## The Code
 ### HTML
