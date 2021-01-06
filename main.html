@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- LINKED JS in index.js-->
 <html>
     <head>    
         <title>APEX CAPSTONE PROJECT</title>
@@ -33,89 +33,77 @@
             </div>
         </nav>
         <div class = "container-fluid">
-        
-        <div class="row">
+        <div class="row justify-content-start">
             <div class="col-4", id="chart"></div> <!-- APEXCHART div selector-->
-            <div class="col-3">
-                <p> Test Paragraph of information regarding the contents of this graph. Lorelum Ipsum Dolor So on and So Forth</p>
+            <div class="col-8">
+                <p>The graph on the left here will take the number you enter in the textbox and map out a prediction of investment returns over the
+                    next 30 years. It treats the entered number as an initial investment in $SPY, the index fund that tracks the SNP500, which is considered
+                    the market benchmark. Its made up of 500 of the biggest public companies, and as such when the stock market is doing well, it does well. 
+                    It's considered the most stable long term investment, and is all but guarenteed to deliever returns in the long run. For reference, the 
+                    aforementioned average annual return rate is 13.6%. The average savings accound interest rate is 0.05%. Thats a difference of 27200%. <br>
+                    The graph uses the average annual returns from the last decade, and compounds your given initial invesment. Ticking the box and 
+                    selecting a stock will show the historical returns. It takes your entered starting $, pulls up the yearly returns for that stock from the 
+                    last decade, and graphs them. The given stocks are some of the most popular/frequently invested from the last decade, and are companies you 
+                    definitly know of. The graph shows you what the value of your initial invesment would be now if you invested that much in that stock back in 
+                    Jan 2012. Finding growth stocks, like these were in 2012, are an aggresive investment strategy. SPY would be considered a passive strategy, 
+                    and investing in these listed companies today would be considered quite safe. After all, its highly unlikely that Microsoft suddenly goes out of buisness.<br>
+                    The table below shows the precise values for easier readability. It will show important years for the 30yr-estimate and will show every year for the
+                    historical 10-year graph. A good way to think about profit in the relative short term (since long term investing is often an upwards of 5 years) is to look at
+                    the change in a stock year over year, and see how much the change changes. The math behind this is a calculus topic called a derivative, and wont be explored here.
+                    For those with experience in derivatives, integrals, and other calculus topics, working in investing can be a lucrative job. Stocks that show increasing returns (eg. 10% in
+                    one year and then 15% in the next and then 20% after) consistently are considered safer than stocks that show massive volatility; like Zoom in 2020. Agressive investors
+                    often try to "time the market" by seeking out stocks that will possibly suddenly spike, and invest right before it. Cautious investors will tend to ignore those stocks
+                    in favor of stocks that are safer, but will miss out on returns. However it is generally better to be cautious as a young adult; if you cant handle losing say 25% of
+                    an investment, its probably too risky for you. For every person that gambled thousands on Tesla this year and won big, there are hundreds who bought in too late and 
+                    got burned for it. <b>"Buy low, sell high" is a far better tenet than "Stonks go up"</b>.
+                </p>
             </div>
         </div> <!-- row div close-->
-        
-        <div class="row">
-        <form method="POST", autocomplete="off", id='startvalform', onsubmit="userGivenChart(); return false;"> <!-- return false disables page reload-->
-            <p>$<input type="number", id="customAmt"/>
-                <input type="submit", value = "Enter"/>
-            </p>
-        </form>
+
+        <div class="row justify-content-start">
+            <div class="col-4">
+            <form method="POST", autocomplete="off", id='startvalform', onsubmit="whenFormisSubmit(); return false;"> <!-- return false disables page reload-->       
+            <div class="row justify-content-start">
+                <div class="col">
+                    $<input type="number", id="customAmt"/>
+                </div>
+                <div class='col'>
+                    <b>Select Graph Mode:</b>
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col">
+                    <h3> </h3>
+                    <input type="submit", value = "Enter"/>
+                </div>
+                <div class="col">
+                    <p><input type="checkbox", id="histDataSwitch", name="histDataSwitch">
+                    <label for="histDataSwitch">Historical Data</label></p>
+                    <p><select name="stock" id="stock">
+                        <option value="AAPL">Apple</option>
+                        <option value="AMZN">Amazon</option>
+                        <option value="FB">Facebook</option>
+                        <option value="MSFT">Microsoft</option>
+                        <option value="SPY">SPY</option>
+                    </select>
+                    <label for="stock">Pick Stock</label></p>
+                    <p>check box and select the stock ticker to see data as if you invested 10yrs ago</p>
+                    <p>data is taken from the highest price in January of each year, accounting for stock splits</p>
+                </div>
+            </div>
+            </form>
+            </div>
+            <div class="col-8">
+                <h3> Graph Data (X on top, Y on bottom)</h3>
+                <table id="graphData" class="table table-bordered">
+                    <tbody id="tableBody">
+                        <!-- populated by populateTable (in the js), all contents must be rendered through that function -->
+                    </tbody>
+                </table>
+            </div>
         </div> <!--row #2 close-->
         
-        <script>
-            function createData(startval) {    // returns array of x y coords in format [[x1,y1], [x2, y2], [x3, y3] ... ] starting at x=0
-            var mydataset = []
-            var i = 0
-            while (i < 31) {
-                var amt = Math.round(startval*Math.pow(1.136,i))
-                mydataset[i] = [i, amt]
-                i++
-                }
-            return mydataset
-            }
-
-            function makeChart(dataset) { // only used in the inital creation of global chart myChart with a blank dataset. Cannot be called again while myChart exists
-            var options = {
-                chart: {
-                    type:'line',
-                    toolbar : {
-                        show: false
-                    }
-                },
-                tooltip: {
-                    enabled : false,
-                    shared : false
-                },
-                series: [{
-                    name : 'Estimated Returns',
-                    data : dataset
-                }],
-                xaxis: {
-                    type : 'numeric',
-                    title : {
-                        text : 'Years Later',
-                        style: {
-                            fontSize:  '14px',
-                            fontWeight:  'bold',
-                            fontFamily:  'Calibri',
-                            color:  '#263238'
-                            }
-                    }
-                },
-                yaxis: {
-                    title : {
-                        text : 'Estimated Returns (in $)',
-                        style: {
-                            fontSize:  '14px',
-                            fontWeight:  'bold',
-                            fontFamily:  'Calibri',
-                            color:  '#263238'
-                        }
-                    }
-                }
-            }
-            var chart = new ApexCharts(document.querySelector("#chart"), options) // no clue how this works btw but it links to the chart div
-            chart.render();
-            return chart
-            } 
-
-            function userGivenChart() { // takes in the user input from customAmt textbox, runs createData to generate the xy points, updates the myChart dataset
-            var newamt = document.getElementById("customAmt").value;
-            var newdataset = createData(newamt)
-            myChart.updateSeries([{
-                name : 'Estimated Returns',
-                data : newdataset
-            }])
-            }
-            var myChart = makeChart([]) // initializes a blank chart "myChart", global variable
-        </script>
+        <script src="index.js"></script>
         
         </div> <!--Overall container close-->
     </body>
